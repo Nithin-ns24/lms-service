@@ -81,10 +81,10 @@ public class KafkaClient {
       ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, event);
       producer.send(record);
     } else {
-      logger.error(null, "Topic id: " + topic + ", does not exists.", null);
+      logger.error(null, TOPIC_ID + topic + DOES_NOT_EXISTS, null);
       throw new ProjectCommonException(
           "TOPIC_NOT_EXISTS_EXCEPTION",
-          "Topic id: " + topic + ", does not exists.",
+          TOPIC_ID + topic + DOES_NOT_EXISTS,
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
@@ -95,10 +95,10 @@ public class KafkaClient {
       ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, event);
       producer.send(record);
     } else {
-      logger.error(null, "Topic id: " + topic + ", does not exists.", null);
+      logger.error(null, TOPIC_ID + topic + DOES_NOT_EXISTS, null);
       throw new ProjectCommonException(
           "TOPIC_NOT_EXISTS_EXCEPTION",
-          "Topic id: " + topic + ", does not exists.",
+          TOPIC_ID + topic + DOES_NOT_EXISTS,
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
@@ -109,4 +109,8 @@ public class KafkaClient {
     }
     return topics.keySet().contains(topic);
   }
+  
+  private static final String TOPIC_ID = "Topic id: ";
+  
+  private static final String DOES_NOT_EXISTS = ", does not exists.";
 }

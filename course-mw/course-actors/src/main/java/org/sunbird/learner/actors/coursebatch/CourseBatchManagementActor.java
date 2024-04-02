@@ -592,11 +592,11 @@ public class CourseBatchManagementActor extends BaseActor {
   }
 
   private Map<String, Object> getContentDetails(RequestContext requestContext, String courseId, Map<String, String> headers) {
-    Map<String, Object> ekStepContent = ContentUtil.getContent(courseId, Arrays.asList("status", "batches", "leafNodesCount"));
+    Map<String, Object> ekStepContent = ContentUtil.getContent(courseId, Arrays.asList(STATUS_1, BATCHES, "leafNodesCount"));
     logger.info(requestContext, "CourseBatchManagementActor:getEkStepContent: courseId: " + courseId, null,
             ekStepContent);
-    String status = (String) ((Map<String, Object>)ekStepContent.getOrDefault("content", new HashMap<>())).getOrDefault("status", "");
-    Integer leafNodesCount = (Integer) ((Map<String, Object>) ekStepContent.getOrDefault("content", new HashMap<>())).getOrDefault("leafNodesCount", 0);
+    String status = (String) ((Map<String, Object>)ekStepContent.getOrDefault(CONTENT, new HashMap<>())).getOrDefault(STATUS_1, "");
+    Integer leafNodesCount = (Integer) ((Map<String, Object>) ekStepContent.getOrDefault(CONTENT, new HashMap<>())).getOrDefault("leafNodesCount", 0);
     if (null == ekStepContent ||
             ekStepContent.size() == 0 ||
             !validCourseStatus.contains(status) || leafNodesCount == 0) {
@@ -606,7 +606,7 @@ public class CourseBatchManagementActor extends BaseActor {
           ResponseCode.invalidCourseId.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    return (Map<String, Object>)ekStepContent.getOrDefault("content", new HashMap<>());
+    return (Map<String, Object>)ekStepContent.getOrDefault(CONTENT, new HashMap<>());
   }
 
   private void validateContentOrg(RequestContext requestContext, List<String> createdFor) {
@@ -686,7 +686,7 @@ public class CourseBatchManagementActor extends BaseActor {
   }
 
   private void updateCollection(RequestContext requestContext, Map<String, Object> courseBatch, Map<String, Object> contentDetails) {
-    List<Map<String, Object>> batches = (List<Map<String, Object>>) contentDetails.getOrDefault("batches", new ArrayList<>());
+    List<Map<String, Object>> batches = (List<Map<String, Object>>) contentDetails.getOrDefault(BATCHES, new ArrayList<>());
     Map<String, Object> data =  new HashMap<>();
     data.put("batchId", courseBatch.getOrDefault(JsonKey.BATCH_ID, ""));
     data.put("name", courseBatch.getOrDefault(JsonKey.NAME, ""));
@@ -694,11 +694,11 @@ public class CourseBatchManagementActor extends BaseActor {
     data.put("startDate", courseBatch.getOrDefault(JsonKey.START_DATE, ""));
     data.put("endDate", courseBatch.getOrDefault(JsonKey.END_DATE, null));
     data.put("enrollmentType", courseBatch.getOrDefault(JsonKey.ENROLLMENT_TYPE, ""));
-    data.put("status", courseBatch.getOrDefault(JsonKey.STATUS, ""));
+    data.put(STATUS_1, courseBatch.getOrDefault(JsonKey.STATUS, ""));
     data.put("enrollmentEndDate", getEnrollmentEndDate((String) courseBatch.getOrDefault(JsonKey.ENROLLMENT_END_DATE, null), (String) courseBatch.getOrDefault(JsonKey.END_DATE, null)));
     batches.removeIf(map -> StringUtils.equalsIgnoreCase((String) courseBatch.getOrDefault(JsonKey.BATCH_ID, ""), (String) map.get("batchId")));
     batches.add(data);
-    ContentUtil.updateCollection(requestContext, (String) courseBatch.getOrDefault(JsonKey.COURSE_ID, ""), new HashMap<String, Object>() {{ put("batches", batches);}});
+    ContentUtil.updateCollection(requestContext, (String) courseBatch.getOrDefault(JsonKey.COURSE_ID, ""), new HashMap<String, Object>() {{ put(BATCHES, batches);}});
   }
 
   private Object getEnrollmentEndDate(String enrollmentEndDate, String endDate) {
@@ -715,5 +715,11 @@ public class CourseBatchManagementActor extends BaseActor {
       }
     }).orElse(null));
   }
+  
+  private static final String STATUS_1 = "status";
+  
+  private static final String BATCHES = "batches";
+  
+  private static final String CONTENT = "content";
 
 }
