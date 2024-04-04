@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class QRCodeDownloadManager {
     public LoggerUtil logger = new LoggerUtil(this.getClass());
-    private static final List<String> fields = Arrays.asList("identifier", "dialcodes", "name","channel");
+    private static final List<String> fields = Arrays.asList(IDENTIFIER, DIALCODES, "name","channel");
     private static final Map<String, String> filtersHelperMap =
             new HashMap<String, String>() {
                 {
@@ -117,16 +117,16 @@ public class QRCodeDownloadManager {
             logger.info(null, "QRCodeDownloadManager:: getQRCodeImageUrl:: QR Code List response:: ", null, (Map<String, Object>) data.get(JsonKey.PARAMS));
             if (MapUtils.isNotEmpty(data)) {
                 Map<String, Object> resultData = (Map<String, Object>) data.get(JsonKey.RESULT);
-                logger.info(null,"QRCodeDownloadManager:: getQRCodeImageUrl:: Total number of images fetched : " + ((List) resultData.get("dialcodes")).size());
+                logger.info(null,"QRCodeDownloadManager:: getQRCodeImageUrl:: Total number of images fetched : " + ((List) resultData.get(DIALCODES)).size());
                 if (MapUtils.isNotEmpty(resultData)) {
-                    List<Map<String, Object>> qrCodeImagesList = (List) resultData.get("dialcodes");
+                    List<Map<String, Object>> qrCodeImagesList = (List) resultData.get(DIALCODES);
                     Map<String, String> resMap = new HashMap<>();
 
                     for(Map<String, Object> qrImageObj : qrCodeImagesList) {
                         if(qrImageObj.get("imageUrl") != null )
-                            resMap.put(qrImageObj.get("identifier").toString(), qrImageObj.get("imageUrl").toString());
+                            resMap.put(qrImageObj.get(IDENTIFIER).toString(), qrImageObj.get("imageUrl").toString());
                         else
-                            resMap.put(qrImageObj.get("identifier").toString(), "");
+                            resMap.put(qrImageObj.get(IDENTIFIER).toString(), "");
                     }
                     return resMap;
                 }
@@ -138,5 +138,9 @@ public class QRCodeDownloadManager {
         }
         return new HashMap<>();
     }
+    
+    private static final String IDENTIFIER = "identifier";
+    
+    private static final String DIALCODES = "dialcodes";
 
 }
