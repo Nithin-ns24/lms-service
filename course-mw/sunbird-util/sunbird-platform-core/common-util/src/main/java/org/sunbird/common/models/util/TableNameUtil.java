@@ -1,8 +1,6 @@
 package org.sunbird.common.models.util;
 
 public class TableNameUtil {
-    private TableNameUtil() {
-    }
     
     public static final String USER_ENROLLMENTS_TABLENAME = "user_enrolments";
     public static final String USER_CONTENT_CONSUMPTION_TABLENAME = "user_content_consumption";
