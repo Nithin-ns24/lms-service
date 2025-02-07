@@ -19,6 +19,7 @@
         <CLOUD_STORAGE_GROUP_ID>org.sunbird</CLOUD_STORAGE_GROUP_ID>
         <CLOUD_STORE_ARTIFACT_ID>cloud-store-sdk</CLOUD_STORE_ARTIFACT_ID>
         <CLOUD_STORE_VERSION>1.4.6</CLOUD_STORE_VERSION>
+        <versions.java-security-toolkit>1.2.1</versions.java-security-toolkit>
     </properties>
 
     <dependencies>
@@ -261,6 +262,10 @@
             <artifactId>kafka-clients</artifactId>
             <version>0.10.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -327,4 +332,13 @@
             </plugin>
         </plugins>
     </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.pixee</groupId>
+                <artifactId>java-security-toolkit</artifactId>
+                <version>${versions.java-security-toolkit}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
