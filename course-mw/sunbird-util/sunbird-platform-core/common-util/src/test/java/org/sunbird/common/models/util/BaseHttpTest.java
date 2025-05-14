@@ -1,5 +1,6 @@
 package org.sunbird.common.models.util;
 
+import io.github.pixee.security.BoundedLineReader;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -75,7 +76,7 @@ public abstract class BaseHttpTest {
         when(connection.getInputStream()).thenReturn(inStream);
       }
       whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
-      when(reader.readLine()).thenReturn(outputExpected, null);
+      when(BoundedLineReader.readLine(reader, 5_000_000)).thenReturn(outputExpected, null);
     } catch (Exception e) {
       Assert.fail("Mock rules addition failed " + e.getMessage());
     }
